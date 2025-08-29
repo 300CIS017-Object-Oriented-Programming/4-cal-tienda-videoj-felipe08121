@@ -19,8 +19,12 @@ using std::setprecision;
 
 const int PRECIO_JUEGO_GODOFWAR = 200000;
 
+const int MAX_ITEMS = 100;
+
+int leerCodigoJuego();
 
 
+int leerCantidadJuegos();
 
 
 string obtenerNombreJuego(int codigoJuego);
@@ -54,6 +58,9 @@ double calcularTotalFinal(double subtotal, double porcentajeDescuento, double de
 
 
 void mostrarResumenCompra(const int codigos[], const int cantidades[], int cantidadJuegosRegistrados, double porcentajeDescuento);
+
+
+void mostrarCatologoJuegos();
 
 
 void cargarCompraDemo(int codigos[], int cantidades[], int& cantidadJuegosRegistrados);
