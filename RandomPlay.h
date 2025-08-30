@@ -44,6 +44,22 @@ const int PRECIO_JUEGO_CIV_5 = 160000;
 
 
 
+const double DESCUENTO_ORO = 0.15;
+
+const double DESCUENTO_PLATA = 0.08;
+
+const double DESCUENTO_CLIENTE_REGULAR = 0.00;
+
+
+const double DESCUENTO_ACCION = 0.1;
+
+const double DESCUENTO_AVENTURA = 0.35;
+
+const double DESCUENTO_DEPORTE = 0.20;
+
+const double DESCUENTO_ESTRATEGIA = 0.50;
+
+
 const int MAX_ITEMS = 100;
 
 int leerCodigoJuego();
@@ -74,6 +90,8 @@ int leerTipoCliente();
 
 
 double obtenerPorcentajeDescuento(int tipoCliente);
+
+double obtenerPorcenjeDescuentoAdicional(int codigoJuego);
 
 
 double calcularDescuentosAdicionales(const int codigos[], const int cantidades[], int cantidadJuegosRegistrados);

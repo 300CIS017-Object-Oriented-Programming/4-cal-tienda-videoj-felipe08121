@@ -18,6 +18,7 @@ cout << "3. Finalizar y pagar \n";
 cout << "4. Realizar Demostracion del programa \n";
 cout << "5. Mostrar el resumen de la compra \n";
 cout << "6. Limpiar el carrito\n";
+cout << "7. Mostrar Resumen de la Compra.\n";
 cout << "-1. Salir \n";
 cout << "Elija una opcion: \n";
 }
@@ -26,7 +27,7 @@ int leerOpcionMenu()
 {
     int opcion;
     cin >> opcion;
-    while ((opcion < 1 || opcion > 6 ) && (opcion != -1) )
+    while ((opcion < 1 || opcion > 7 ) && (opcion != -1) )
     {
         cout << "Opcion invalida. Intente de nuevo (1-6): ";
         cin.clear();
@@ -85,8 +86,22 @@ int main () {
 
             case 6: {
                 limpiarCarrito( cantidadJuegosRegistrados );
+                break;
             }
 
+            case 7: {
+                if (cantidadJuegosRegistrados == 0 ) {
+                    cout << "\nNo hay juegos registrados en el carrito.\n\n";
+                    break;
+                }
+
+                double subtotal = calcularSubtotalCarrito( codigos, cantidades, cantidadJuegosRegistrados);
+                int tipoUsuario = leerTipoCliente();
+                double porcentajeDescuento = obtenerPorcentajeDescuento(tipoUsuario);
+                mostrarResumenCompra( codigos, cantidades, cantidadJuegosRegistrados, porcentajeDescuento );
+                break;
+
+            }
             case -1: {
                 cout << "\n Saliendo del sistemas. Hasta Pronto!!! \n ";
                 break;

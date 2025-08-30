@@ -286,10 +286,95 @@ void limpiarCarrito( int &cantidadJuegosRegistrados ) {
     cantidadJuegosRegistrados = 0;
 }
 
+int leerTipoCliente()
+{
+    cout << "Tipo de cliente: \n" <<"1. Miembro Oro: 15% \n" <<
+        "2. Miembro Plata: 8% \n"<< "Cualquier Otro Numero. Cliente Regular: 0% \n";
+    cout << "Por favor ingrese el numero que corresponde: ";
+    int tipo;
+    cin >> tipo;
+    while (tipo < 1 || tipo > 3 ) {
+        cout << "Opcion no valida. intente de nuevo (1-3). \n";
+        cin.clear();
+        cin.ignore(1000, '\n' );
+        cin >> tipo;
+    }
+    return tipo;
+}
+
+double obtenerPorcentajeDescuento(int tipoCliente)
+{
+    switch( tipoCliente ) {
+        case 1: {
+            return abs(DESCUENTO_ORO);
+        }
+        case 2: {
+            return abs(DESCUENTO_PLATA);
+        }
+        default: {
+            return abs(DESCUENTO_CLIENTE_REGULAR);
+        }
+    }
+}
+
+double obtenerPorcenjeDescuentoAdicional(int codigoJuego )
+{
+    string categoria = obtenerCategoria(codigoJuego);
+
+    if (categoria == "Accion" ) {
+        return abs(DESCUENTO_ACCION);
+    }
+
+    else if (categoria == "Aventura") {
+        return abs(DESCUENTO_AVENTURA);
+    }
+
+    else if (categoria == "Deporte" ) {
+        return abs(DESCUENTO_DEPORTE);
+    }
+    else if (categoria == "Estrategia") {
+        return abs(DESCUENTO_ESTRATEGIA);
+    }
+}
+
+
+double calcularDescuentosAdicionales(const int codigos[], const int cantidades[], int cantidadJuegosRegistrados)
+{
+
+    double subtotal= 0.0;
+    for ( int i=0 ; i < cantidadJuegosRegistrados; i++ ) {
+        subtotal += (obtenerPrecioJuego( codigos[ i ] ) * cantidades[ i ]) * obtenerPorcenjeDescuentoAdicional(codigos[ i ]);
+    }
+    return subtotal;
+}
+
+
+double calcularTotalFinal(double subtotal, double porcentajeDescuento, double descuentosAdicionales)
+{
+
+    return (subtotal * (1.0 - porcentajeDescuento)) - descuentosAdicionales;
+
+}
 
 
 void mostrarResumenCompra(const int codigos[], const int cantidades[], int cantidadJuegosRegistrados, double porcentajeDescuento)
 {
+
+    cout << "\nResumen del pedido: \n";
+
+    double subtotal = 0.0;
+    for ( int i = 0; i < cantidadJuegosRegistrados; i++ ) {
+        string nombreJuego = obtenerNombreJuego(codigos[ i ]);
+        int precio = obtenerPrecioJuego( codigos [ i ] );
+        double parcial = precio * cantidades[ i ];
+        subtotal += parcial;
+        cout << nombreJuego << " x" << cantidades[ i ] << " = $" << parcial << "\n";
+    }
+
+    double descuentosAdicionales = calcularDescuentosAdicionales( codigos, cantidades, cantidadJuegosRegistrados);
+    cout << fixed << setprecision( 2 );
+    cout << "\nTotal sin Descuento: $" << subtotal << "\n";
+    cout << "Total con Descuento: $" << calcularTotalFinal( subtotal, porcentajeDescuento, descuentosAdicionales) << "\n\n";
 
 }
 
