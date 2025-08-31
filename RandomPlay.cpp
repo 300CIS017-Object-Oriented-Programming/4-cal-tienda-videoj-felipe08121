@@ -28,7 +28,7 @@ string obtenerNombreJuego(int codigoJuego) {
             return"Zelda";
         }
         case 7: {
-            return" FIFA";
+            return"FIFA";
         }
         case 8: {
             return"NBA";
@@ -171,12 +171,12 @@ void mostrarCatologoJuegos(){
 
     cout << "\n =====  Catalogo de juegos  ===== \n";
 
-    cout << "1. Accion. \n";
-    cout << "2. Aventura.\n";
-    cout << "3. Deportes. \n";
-    cout << "4. Estrategia \n";
+    cout << "1. Accion - Descuento 10%. \n";
+    cout << "2. Aventura - Descuento 35%.\n";
+    cout << "3. Deportes - Descuento 20%. \n";
+    cout << "4. Estrategia - Descuento 50%. \n";
 
-    cout << "Que Genero juegos desea ver? : \n";
+    cout << "Que Genero de juegos deseas ver? : \n";
     cin >> opcion;
 
 
@@ -289,11 +289,11 @@ void limpiarCarrito( int &cantidadJuegosRegistrados ) {
 int leerTipoCliente()
 {
     cout << "Tipo de cliente: \n" <<"1. Miembro Oro: 15% \n" <<
-        "2. Miembro Plata: 8% \n"<< "Cualquier Otro Numero. Cliente Regular: 0% \n";
+        "2. Miembro Plata: 8% \n"<< "Cualquier Otro Numero (positivo). Cliente Regular: 0% \n";
     cout << "Por favor ingrese el numero que corresponde: ";
     int tipo;
     cin >> tipo;
-    while (tipo < 1 || tipo > 3 ) {
+    while (tipo < 1 ) {
         cout << "Opcion no valida. intente de nuevo (1-3). \n";
         cin.clear();
         cin.ignore(1000, '\n' );
@@ -304,17 +304,15 @@ int leerTipoCliente()
 
 double obtenerPorcentajeDescuento(int tipoCliente)
 {
-    switch( tipoCliente ) {
-        case 1: {
-            return abs(DESCUENTO_ORO);
-        }
-        case 2: {
-            return abs(DESCUENTO_PLATA);
-        }
-        default: {
-            return abs(DESCUENTO_CLIENTE_REGULAR);
-        }
+    if (tipoCliente == 1) {
+        return abs(DESCUENTO_ORO);
     }
+    else if (tipoCliente == 2) {
+        return abs(DESCUENTO_PLATA);
+    }
+
+    return abs(DESCUENTO_CLIENTE_REGULAR);
+
 }
 
 double obtenerPorcenjeDescuentoAdicional(int codigoJuego )
@@ -329,7 +327,7 @@ double obtenerPorcenjeDescuentoAdicional(int codigoJuego )
         return abs(DESCUENTO_AVENTURA);
     }
 
-    else if (categoria == "Deporte" ) {
+    else if (categoria == "Deportes" ) {
         return abs(DESCUENTO_DEPORTE);
     }
     else if (categoria == "Estrategia") {
@@ -359,7 +357,7 @@ double calcularTotalFinal(double subtotal, double porcentajeDescuento, double de
 
 void mostrarResumenCompra(const int codigos[], const int cantidades[], int cantidadJuegosRegistrados, double porcentajeDescuento)
 {
-
+//Aunque la funcion se llame mostrarResumenCompra, es la que se utiliza en el main en caso de finalizar compra.
     cout << "\nResumen del pedido: \n";
 
     double subtotal = 0.0;
@@ -368,13 +366,14 @@ void mostrarResumenCompra(const int codigos[], const int cantidades[], int canti
         int precio = obtenerPrecioJuego( codigos [ i ] );
         double parcial = precio * cantidades[ i ];
         subtotal += parcial;
+        cout << fixed << setprecision( 2 );
         cout << nombreJuego << " x" << cantidades[ i ] << " = $" << parcial << "\n";
     }
 
     double descuentosAdicionales = calcularDescuentosAdicionales( codigos, cantidades, cantidadJuegosRegistrados);
     cout << fixed << setprecision( 2 );
     cout << "\nTotal sin Descuento: $" << subtotal << "\n";
-    cout << "Total con Descuento: $" << calcularTotalFinal( subtotal, porcentajeDescuento, descuentosAdicionales) << "\n\n";
+    cout << "Total con Descuentos (Incluye los descuentos por categoria): $" << calcularTotalFinal( subtotal, porcentajeDescuento, descuentosAdicionales) << "\n\n";
 
 }
 
@@ -383,26 +382,29 @@ void mostrarResumenCompra(const int codigos[], const int cantidades[], int canti
 
 void cargarCompraDemo( int codigos[], int cantidades[], int &cantidadJuegosRegistrados ) {
 
+    // Limpiar pedido actual si existe
 cantidadJuegosRegistrados = 0;
 
+
+    // Añadir productos de ejemplo
 codigos[ 0 ] = 1;    // Battlefiel
 cantidades[ 0 ]= 5;
 
-codigos[ 1 ] = 2; // Call of Duty
+codigos[ 1 ] = 4; // The Witcher 3
 cantidades[ 1 ] = 3;
 
-codigos[ 2 ]= 3; // CyberPunk 2077
+codigos[ 2 ]= 7; // Fifa
 cantidades[ 2 ] = 1;
 
-codigos[ 3 ] = 4; // Pokemon
+codigos[ 3 ] = 10; // Total War: Rome
 cantidades[ 3 ] = 2;
 
 cantidadJuegosRegistrados = 4;
 
     cout << "\n Se han cargado los juegos de ejemplo en el pedido: \n";
-    cout << "- 5 Copias de Battlefield \n";
-    cout << "- 3 Copias de Call of Duty \n";
-    cout << "- 1 Copia de CyberPunk 2077 \n";
-    cout << "- 2 Copias de Pokemon \n\n";
+    cout << "- 5 Copias de Battlefield - Descuento (Accion): 10%\n";
+    cout << "- 3 Copias de The Witcher 3 - Descuento (Aventura): 35%\n";
+    cout << "- 1 Copia de Fifa - Descuento (Deportes): 20%\n";
+    cout << "- 2 Copias de Total War: Rome - Descuento (Estrategia): 50%\n\n";
 
 }
